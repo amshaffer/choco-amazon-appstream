@@ -4,25 +4,30 @@
     <id>amazon-appstream</id>
     <version>1.1.294</version>
     <title>Amazon AppStream Client</title>
-    <authors>Andrew Shaffer</authors>
+    <authors>Amazon</authors>
+    <owners>Andrew Shaffer</owners>
     <projectUrl>https://clients.amazonappstream.com</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/amshaffer/choco-amazon-appstream/master/icons/amazon-appstream.png</iconUrl>
     <packageSourceUrl>https://github.com/amshaffer/choco-amazon-appstream</packageSourceUrl>
     <tags>appstream</tags>
     <summary>Install the Amazon AppStream 2.0 client via the Enterprise Deployment Tool with USB redirection support.</summary>
     <description>
-    Installs the client here https://clients.amazonappstream.com under "Enterprise Deployment Tools"
+# Amazon AppStream Installer
+Installs the client here https://clients.amazonappstream.com under "Enterprise Deployment Tools"
 
-    ### Package Specific
-    #### Package Parameters
-    The following package parameters can be set:
+## Package Parameters
+### The following package parameters can be set:
 
-      * `/StartUrl:` - Specifies a start URL for the appstream client
-      * `/AutoUpdateDisabled:` - If set to "true" this will disable client auto updates.
+  * `/StartUrl:` - Specifies a start URL for the appstream client
+  * `/AutoUpdateDisabled:` - If set to "true" this will disable client auto updates.
+  * `/TrustedDomains:` - Comma-separated list of one or more IdP domains to trust. When you specify the URL, use the following format: *.example-idp.com. 
 
-    To pass parameters, use `--params "''"` (e.g. `choco install packageID [other options] --params="'/ITEM:value /ITEM2:value2 /FLAG_BOOLEAN'"`).
-    To have choco remember parameters on upgrade, be sure to set `choco feature enable -n=useRememberedArgumentsForUpgrades`.
+To pass parameters, use `--params "''"` (e.g. `choco install amazon-appstream --params="'/StartUrl:https://demo.domain.com /AutoUpdateDisabled:true'"`)
+To have choco remember parameters on upgrade, be sure to set `choco feature enable -n=useRememberedArgumentsForUpgrades`.
     </description>
+    <releaseNotes>https://docs.aws.amazon.com/appstream2/latest/developerguide/client-release-versions.html</releaseNotes>
+    <bugTrackerUrl>https://github.com/amshaffer/choco-amazon-appstream/issues</bugTrackerUrl>
+    <licenseUrl>https://aws.amazon.com/asl/</licenseUrl>
   </metadata>
   <files>
     <file src="tools\**" target="tools" />

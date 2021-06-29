@@ -69,6 +69,12 @@ New-Item -Path "HKLM:\Software\Amazon" -Name "AppStream Client" -Force | Out-Nul
     New-ItemProperty -Path $registryPath -Name "AutoUpdateDisabled" -Value "True" -PropertyType String -Force | Out-Null
   }
 
+  # Disable automatic client updates if specified
+  if($parameters['TrustedDomains']){
+    Write-Host "Received TrustedDomains parameter value of $($parameters['TrustedDomains']), adding to registry."
+    New-ItemProperty -Path $registryPath -Name "TrustedDomains" -Value $($parameters['TrustedDomains']) -PropertyType String -Force | Out-Null
+  }
+
 Write-Host -ForegroundColor Magenta @"
   AppStream Client and USB drivers installed.
   You must reboot your PC to finalize the driver installation.
