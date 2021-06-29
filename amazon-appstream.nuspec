@@ -6,7 +6,7 @@
     <title>Amazon AppStream Client</title>
     <authors>Andrew Shaffer</authors>
     <projectUrl>https://clients.amazonappstream.com</projectUrl>
-    <iconUrl>http://cdn.rawgit.com/amshaffer/choco-amazon-appstream/master/icons/amazon-appstream.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/amshaffer/choco-amazon-appstream/master/icons/amazon-appstream.png</iconUrl>
     <packageSourceUrl>https://github.com/amshaffer/choco-amazon-appstream</packageSourceUrl>
     <tags>appstream</tags>
     <summary>Install the Amazon AppStream 2.0 client via the Enterprise Deployment Tool with USB redirection support.</summary>
