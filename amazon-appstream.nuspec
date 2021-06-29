@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>amazon-appstream</id>
+    <version>1.1.294</version>
+    <title>Amazon AppStream Client</title>
+    <authors>Andrew Shaffer</authors>
+    <projectUrl>https://clients.amazonappstream.com</projectUrl>
+    <iconUrl>http://cdn.rawgit.com/amshaffer/choco-amazon-appstream/master/icons/amazon-appstream.png</iconUrl>
+    <packageSourceUrl>https://github.com/amshaffer/choco-amazon-appstream</packageSourceUrl>
+    <tags>appstream</tags>
+    <summary>Install the Amazon AppStream 2.0 client via the Enterprise Deployment Tool with USB redirection support.</summary>
+    <description>
+    Installs the client here https://clients.amazonappstream.com under "Enterprise Deployment Tools"
+
+    ### Package Specific
+    #### Package Parameters
+    The following package parameters can be set:
+
+      * `/StartUrl:` - Specifies a start URL for the appstream client
+      * `/AutoUpdateDisabled:` - If set to "true" this will disable client auto updates.
+
+    To pass parameters, use `--params "''"` (e.g. `choco install packageID [other options] --params="'/ITEM:value /ITEM2:value2 /FLAG_BOOLEAN'"`).
+    To have choco remember parameters on upgrade, be sure to set `choco feature enable -n=useRememberedArgumentsForUpgrades`.
+    </description>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
