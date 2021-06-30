@@ -1,12 +1,12 @@
 ﻿$ErrorActionPreference = 'Stop';
 
-# Get Package parameters
 $parameters = Get-PackageParameters
 
-$packageName= 'amazon-appstream'
-$toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-$url        = 'https://clients.amazonappstream.com/installers/windows/AmazonAppStreamClient_EnterpriseSetup_1.1.294.zip'
+$packageName   = 'amazon-appstream'
+$toolsDir      = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
+$url           = 'https://clients.amazonappstream.com/installers/windows/AmazonAppStreamClient_EnterpriseSetup_1.1.294.zip'
 $downloadedZip = Join-Path $toolsDir 'AmazonAppStreamClient_EnterpriseSetup.zip'
+$fileLocation  = Join-Path $toolsDir 'AmazonAppStreamClientSetup_1.1.294.msi'
 
 $packageArgs = @{
   packageName   = $packageName
@@ -17,37 +17,18 @@ $packageArgs = @{
 }
 
 Get-ChocolateyWebFile @packageArgs
+
 Get-ChocolateyUnzip -FileFullPath $downloadedZip -Destination $toolsDir
 
-<#
-$packageArgs = @{
-  packageName   = $env:ChocolateyPackageName
-  unzipLocation = $toolsDir
-  url           = $url
-  softwareName  = 'amazon-appstream*' #part or all of the Display Name as you see it in Programs and Features. It should be enough to be unique
-  checksum      = 'E6340D40D88994BAC6C18BEB3F49791D79E4192448352954C9536A4D824E2DC8'
-  checksumType  = 'sha256' #default is md5, can also be sha1, sha256 or sha512
+$installerArgs  = @{
+  packageName   = $packageName
+  silentArgs    = "/qn /norestart /l*v `"$($env:TEMP)\$($packageName).$($env:chocolateyPackageVersion).MsiInstall.log`""
+  validExitCodes= @(0, 3010, 1641)
+  file          = $fileLocation
+  fileType      = 'msi'
 }
 
-## Download and unpack a zip file - https://chocolatey.org/docs/helpers-install-chocolatey-zip-package
-#Install-ChocolateyZipPackage -PackageName $packageName -Url $url -UnzipLocation $toolsDir
-Install-ChocolateyZipPackage @packageArgs
-#>
-
-Write-Host "Installing AppStream machine-wide installer."
-$msiPath = Get-ChildItem $toolsDir | Where-Object {$_.name -match ".*\.msi"} | Select-Object -First 1
-try {
-  start-process -filepath msiexec.exe -argumentlist "/qn /i $($msiPath.fullname) /L*V `"$toolsDir\ASClientInstall.log`"" -wait
-}catch{
-  write-host "Installation of AppStream machine-wide installer failed, please check logs."
-}
-Write-Host "Installing AppStream Client USB drivers."
-$exePath = Get-ChildItem $toolsDir | Where-Object {$_.name -match ".*\.exe"} | Select-Object -First 1
-try {
-  start-process -filepath $exePath.fullname -argumentlist "/quiet /norestart" -wait
-}catch{
-  write-host "Installation of AppStream USB drivers failed, please check logs."
-}
+Install-ChocolateyInstallPackage @installerArgs
 
 Write-Host "Finished installation of AppStream software."
 
@@ -76,8 +57,7 @@ New-Item -Path "HKLM:\Software\Amazon" -Name "AppStream Client" -Force | Out-Nul
   }
 
 Write-Host -ForegroundColor Magenta @"
-  AppStream Client and USB drivers installed.
-  You must reboot your PC to finalize the driver installation.
-  Users must log off and back on for the installer to run and add the icon to their desktop.
+  AppStream Client Machine-wide installer finished installation.
+  Users must log off and back on for the icon to their desktop.
   See https://docs.aws.amazon.com/appstream2/latest/developerguide/install-client-configure-settings.html#run-powershell-script-install-client-usb-driver-silently for details.
 "@
